@@ -1,4 +1,5 @@
 class TodosController < ApplicationController
+  include ExceptionHandler
   before_action :set_todo, only: [:show]
 
   def index
@@ -10,18 +11,17 @@ class TodosController < ApplicationController
     render json: TodoSerializer.new(@todo).serializable_hash, status: :ok
   end
 
+  def create
+    @todo = Todo.create!(todo_params)
+    render json: TodoSerializer.new(@todo).serializable_hash, status: :created
+  end
+
   private
   def set_todo
-    begin
-      @todo = Todo.find(params[:id])
-    rescue ActiveRecord::RecordNotFound => e
-      render json: {
-        error: e.to_s
-      }, status: :not_found
-    end
+    @todo = Todo.find(params[:id])
   end
 
   def todo_params
-    prams.require(:todo).permit(:title, :created_by)
+    params.permit(:title, :created_by)
   end
 end

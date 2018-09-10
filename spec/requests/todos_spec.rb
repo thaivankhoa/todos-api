@@ -47,7 +47,31 @@ RSpec.describe "Todos", type: :request do
   end
 
   describe "POST /todos" do
-    
+    let(:valid_params) { { title: 'Interview', created_by: "Johan" } }
+
+    context 'when the request is valid' do
+      before { post '/todos', params: valid_params }
+
+      it 'creates a todo' do
+        expect(json["data"]["attributes"]["title"]).to eq("Interview")
+      end
+
+      it 'return status code 201' do 
+        expect(response).to have_http_status(201)
+      end
+    end
+
+    context "when the request is invalid" do
+      before { post '/todos', params: { title: 'test' } }
+
+      it 'return 422 status' do
+        expect(response).to have_http_status(422)
+      end
+
+      it 'return an invalid message' do
+        expect(json["error"]).to match(/Created by can't be blank/)
+      end
+    end
   end
 
   describe "PUT /todos:id" do
