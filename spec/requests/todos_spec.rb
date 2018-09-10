@@ -75,10 +75,45 @@ RSpec.describe "Todos", type: :request do
   end
 
   describe "PUT /todos:id" do
-    
+    let(:valid_params) { {title: "new title"} }
+
+    describe 'when the record exist' do
+
+      context "request is valid" do
+        before { put "/todos/#{todo_id}", params: valid_params }
+
+        it 'return status code 204' do
+          expect(response).to have_http_status(204)
+        end
+      end
+
+      context "request is invalid" do
+        before { put "/todos/#{todo_id}", params: {} }
+
+        it 'return status code 204' do
+          expect(response).to have_http_status(204)
+        end
+      end
+    end
+
+    describe 'when the record is not exist' do
+      before { put "/todos/11", params: valid_params }
+
+      it 'return status code 404' do
+        expect(response).to have_http_status(404)
+      end
+
+      it 'return error message' do
+        expect(json["error"]).to match(/Couldn't find Todo/)
+      end
+    end
   end
 
   describe "DELETE /todos" do
-    
+    before { delete "/todos/#{todo_id}" }
+
+    it 'return status code 204' do
+      expect(response).to have_http_status(204)
+    end 
   end
 end

@@ -1,19 +1,31 @@
 class TodosController < ApplicationController
+  include Response
   include ExceptionHandler
-  before_action :set_todo, only: [:show]
+
+  before_action :set_todo, only: [:show, :update, :destroy]
 
   def index
     @todos = Todo.all
-    render json: TodoSerializer.new(@todos).serializable_hash, status: :ok
+    json_response(@todos, :ok)
   end
 
   def show
-    render json: TodoSerializer.new(@todo).serializable_hash, status: :ok
+    json_response(@todo, :ok)
   end
 
   def create
     @todo = Todo.create!(todo_params)
-    render json: TodoSerializer.new(@todo).serializable_hash, status: :created
+    json_response(@todo, :created)
+  end
+
+  def update
+    @todo = Todo.update(todo_params)
+    head :no_content
+  end
+
+  def destroy
+    @todo.destroy 
+    head :no_content
   end
 
   private
