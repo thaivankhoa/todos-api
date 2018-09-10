@@ -26,7 +26,7 @@ gem 'puma', '~> 3.7'
 # gem 'rack-cors'
 gem 'faker'
 gem 'pry'
-gem 'fast_jsonapi'
+gem 'fast_jsonapi', require: true
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
