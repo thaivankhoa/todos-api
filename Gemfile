@@ -27,6 +27,8 @@ gem 'puma', '~> 3.7'
 gem 'faker'
 gem 'pry'
 gem 'fast_jsonapi', require: true
+gem 'bcrypt'
+gem 'jwt'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
