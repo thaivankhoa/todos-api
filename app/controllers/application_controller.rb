@@ -10,6 +10,7 @@ class ApplicationController < ActionController::API
 
   # Check for valid request token and return user
   def authorize_request
+    # request.headers["Authorization"] = JsonWebToken.encode(user_id: 1)
     @current_user = (AuthorizeApiRequest.new(request.headers).call)[:user]
   end
 end

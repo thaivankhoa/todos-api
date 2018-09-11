@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :item do
-    name { Faker::Starwars.character }
+    name { Faker::Name.name }
     done false
     todo_id nil
   end
