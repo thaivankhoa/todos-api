@@ -13,9 +13,25 @@ class JsonWebToken
     # get payload; first index in decoded Array
     body = JWT.decode(token, HMAC_SECRET)[0]
     HashWithIndifferentAccess.new body
-    # rescue from all decode errors
+    # rescue from expiry exception
   rescue JWT::DecodeError => e
     # raise custom error to be handled by custom handler
     raise ExceptionHandler::InvalidToken, e.message
+  end
+
+  # return valid headers
+  def valid_headers
+    {
+      "Authorization" => token_generator(user.id),
+      "Content-Type" => "application/json"
+    }
+  end
+
+  # return invalid headers
+  def invalid_headers
+    {
+      "Authorization" => nil,
+      "Content-Type" => "application/json"
+    }
   end
 end
